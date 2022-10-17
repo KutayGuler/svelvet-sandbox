@@ -106,6 +106,7 @@
   <slot />
 </div>
 
+<!-- TODO: Fix z-index problem -->
 <style>
   nav {
     cursor: move;

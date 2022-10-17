@@ -8,7 +8,6 @@
 <div>
   <select bind:value={chosen}>
     {#each options as value}
-      <!-- content here -->
       <option {value}>{value}</option>
     {/each}
   </select>

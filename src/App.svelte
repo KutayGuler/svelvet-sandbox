@@ -1,5 +1,6 @@
 <script>
   import XD from "./components/XD.svelte";
+  import ContextMenu from "./ContextMenu.svelte";
   import Svelvet from "./lib/index";
   const initialNodes = [
     {
@@ -10,8 +11,6 @@
       height: 100,
       bgColor: "white",
       borderColor: "transparent",
-      image: true,
-      src: "https://svelvet.io/_app/assets/Logo%201-cc7b0baf.svg",
       sourcePosition: "right",
     },
     {
@@ -119,6 +118,7 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} />
 
+<ContextMenu />
 <Svelvet
   nodes={initialNodes}
   edges={initialEdges}

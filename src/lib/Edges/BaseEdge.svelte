@@ -42,6 +42,8 @@
   aria-label="svg-path"
 />
 
+<!-- TODO: Add options rather than plain text -->
+
 {#if edgeTextProps.label}
   <EdgeText {edgeTextProps} />
 {/if}

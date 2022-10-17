@@ -1,6 +1,6 @@
 import { writable, derived, get, readable } from "svelte/store";
 import type { Readable, Writable } from "svelte/store";
-import type { Node, Edge, DerivedEdge } from "../types/types";
+import type { Node, Edge } from "../types/types";
 
 function createLinker() {
   const { subscribe, update } = writable([]);
@@ -17,6 +17,7 @@ function createLinker() {
             id: `e${state[0]}-${state[1]}`,
             source: state[0],
             target: state[1],
+            label: "labelski",
           });
           state = [];
           linkSuccess = true;

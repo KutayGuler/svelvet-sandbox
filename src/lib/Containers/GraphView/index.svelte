@@ -8,7 +8,6 @@
   import SimpleBezierEdge from "$lib/Edges/SimpleBezierEdge.svelte";
   import EdgeAnchor from "$lib/Edges/EdgeAnchor.svelte";
   import Node from "$lib/Nodes/index.svelte";
-  import ImageNode from "$lib/Nodes/ImageNode.svelte";
 
   import { findOrCreateStore } from "$lib/stores/store";
 
@@ -109,14 +108,18 @@
   >SWITCH Z INDEX</button
 >
 
+<!-- TODO: Add custom context menu -->
+<!-- emoji container -->
+<!-- if statement -->
+<!-- event -->
+<!-- statics -->
+
 <!-- This is the container that holds GraphView and we have disabled right click functionality to prevent a sticking behavior -->
 <div class={`Nodes Nodes-${key}`} on:contextmenu|preventDefault>
   <!-- This container is transformed by d3zoom -->
   <div class={`Node Node-${key}`}>
     {#each $nodesStore as node}
-      {#if node.image && !node.data.label}
-        <ImageNode {node} {key} />
-      {:else if node.data.label}
+      {#if node.data.label}
         <Node on:linked={linked} {node} {key}>{node.data.label}</Node>
       {:else}
         <Node {node} {key} on:linked={linked}>
