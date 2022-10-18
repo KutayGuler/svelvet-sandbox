@@ -18,8 +18,6 @@
     centerY,
   } = baseEdgeProps);
 
-  console.log(baseEdgeProps);
-
   // setting edge text props
   $: edgeTextProps = {
     label: label,
@@ -28,21 +26,15 @@
     centerX: centerX,
     centerY: centerY,
   };
-
-  function removeEdge() {
-    dispatch("removeEdge", id);
-  }
 </script>
 
 <path
-  on:click={removeEdge}
+  on:click={() => dispatch("removeEdge", id)}
   d={path}
   fill="transparent"
   stroke={edgeColor ? edgeColor : "gray"}
   aria-label="svg-path"
 />
-
-<!-- TODO: Add options rather than plain text -->
 
 {#if edgeTextProps.label}
   <EdgeText {edgeTextProps} />

@@ -8,8 +8,9 @@
   import SimpleBezierEdge from "$lib/Edges/SimpleBezierEdge.svelte";
   import EdgeAnchor from "$lib/Edges/EdgeAnchor.svelte";
   import Node from "$lib/Nodes/index.svelte";
+  import ContextMenu from "../../../ContextMenu.svelte";
 
-  import { findOrCreateStore } from "$lib/stores/store";
+  import { findOrCreateStore, contextMenu } from "$lib/stores/store";
 
   // leveraging d3 library to zoom/pan
   let d3 = {
@@ -60,7 +61,7 @@
 
   // function to handle zoom events - arguments: d3ZoomEvent
   function handleZoom(e: any): void {
-    if (!$movementStore) return;
+    if (!$movementStore || $contextMenu) return;
 
     //add a store that contains the current value of the d3-zoom's scale to be used in onMouseMove function
     d3Scale.set(e.transform.k);
@@ -105,17 +106,13 @@
 </script>
 
 <button on:click={() => (svgStyle = svgStyle == z1 ? "" : z1)}
-  >SWITCH Z INDEX</button
+  >{svgStyle == z1 ? "EDIT NODES" : "EDIT EDGES"}</button
 >
 
-<!-- TODO: Add custom context menu -->
-<!-- emoji container -->
-<!-- if statement -->
-<!-- event -->
-<!-- statics -->
+<ContextMenu {key} />
 
 <!-- This is the container that holds GraphView and we have disabled right click functionality to prevent a sticking behavior -->
-<div class={`Nodes Nodes-${key}`} on:contextmenu|preventDefault>
+<div class={`Nodes Nodes-${key}`}>
   <!-- This container is transformed by d3zoom -->
   <div class={`Node Node-${key}`}>
     {#each $nodesStore as node}

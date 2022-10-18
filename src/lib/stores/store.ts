@@ -1,6 +1,8 @@
-import { writable, derived, get, readable } from "svelte/store";
+import { writable, derived, get } from "svelte/store";
 import type { Readable, Writable } from "svelte/store";
 import type { Node, Edge } from "../types/types";
+
+export const contextMenu = writable(false);
 
 function createLinker() {
   const { subscribe, update } = writable([]);

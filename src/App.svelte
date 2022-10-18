@@ -118,7 +118,6 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} />
 
-<ContextMenu />
 <Svelvet
   nodes={initialNodes}
   edges={initialEdges}

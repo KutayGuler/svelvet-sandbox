@@ -11,17 +11,19 @@ Known bug:
 Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dade0c1?version=3.25.0
 -->
 <script>
+  import { findOrCreateStore, contextMenu } from "$lib/stores/store";
+
+  export let key;
+
   // pos is cursor position when right click occur
   let pos = { x: 0, y: 0 };
   // menu is dimension (height and width) of context menu
   let menu = { h: 0, y: 0 };
   // browser/window dimension (height and width)
   let browser = { h: 0, y: 0 };
-  // showMenu is state of context-menu visibility
-  let showMenu = false;
 
   function rightClickContextMenu(e) {
-    showMenu = true;
+    $contextMenu = true;
     browser = {
       w: window.innerWidth,
       h: window.innerHeight,
@@ -42,7 +44,7 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
   function onPageClick(e) {
     // To make context menu disappear when
     // mouse is clicked outside context menu
-    showMenu = false;
+    $contextMenu = false;
   }
   function getContextMenuDimension(node) {
     // This function will get context menu dimension
@@ -55,19 +57,41 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
     };
   }
 
-  function spawnIf() {}
+  const svelvetStore = findOrCreateStore(key);
+  const { nodesStore } = svelvetStore;
+
+  function spawnIf() {
+    let ids = $nodesStore.map((n) => n.id);
+    $nodesStore.push({
+      id: Math.max(...ids) + 1,
+      bgColor: "white",
+      position: { x: 100, y: 100 },
+      width: 100,
+      height: 100,
+      data: { label: "If statement" },
+    });
+    $nodesStore = $nodesStore;
+  }
 
   function spawnEvent() {}
 
-  function spawnStatics() {}
+  function spawnStatics() {
+    // can only be spawned once
+  }
 
   function spawnEmojiContainer() {}
+  function spawnDoubleEmojiContainer() {}
 
   let menuItems = [
     {
       name: "spawnEmojiContainer",
       onClick: spawnEmojiContainer,
       displayText: "Emoji container",
+    },
+    {
+      name: "spawnEmojiContainer",
+      onClick: spawnDoubleEmojiContainer,
+      displayText: "Emoji container x2",
     },
     {
       name: "spawnIf",
@@ -90,19 +114,7 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
   ];
 </script>
 
-<svelte:head>
-  <!-- You can change icon sets according to your taste. Change `class` value in `menuItems` above to represent your icons. -->
-  <!-- <link rel="stylesheet" href="/icon/css/mfglabs_iconset.css"> -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-</svelte:head>
-
-{#if showMenu}
+{#if $contextMenu}
   <nav
     use:getContextMenuDimension
     style="position: absolute; top:{pos.y}px; left:{pos.x}px"

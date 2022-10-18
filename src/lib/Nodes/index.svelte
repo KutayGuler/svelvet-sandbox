@@ -14,6 +14,7 @@
 
   const {
     edgesStore,
+    nodesStore,
     onMouseMove,
     onNodeClick,
     onTouchMove,
@@ -22,13 +23,16 @@
     movementStore,
   } = findOrCreateStore(key);
 
-  console.log($edgesStore);
-
   function attemptLink() {
     let success = linker.link(key, node.id);
     if (success) {
       dispatch("linked");
     }
+  }
+
+  function removeSelf() {
+    $edgesStore = $edgesStore.filter((e) => !e.id.includes(node.id));
+    $nodesStore = $nodesStore.filter((n) => n.id != node.id);
   }
 
   $: shouldMove = moving && $movementStore;
@@ -93,6 +97,24 @@
       moved = false;
     }}
   />
+  <button
+    style="position: absolute; top: -16px; right: -16px; cursor: pointer;"
+    on:click={removeSelf}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="white"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  </button>
   {#if !$edgesStore.some((edge) => edge.source == node.id || edge.target == node.id)}
     <svg
       fill="transparent"
